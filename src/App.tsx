@@ -196,7 +196,6 @@ const clientVideos = [
 ]
 const WHATSAPP =
   "https://wa.me/559830890557?text=Ol%C3%A1%21%20Gostaria%20de%20conhecer%20as%20solu%C3%A7%C3%B5es%20da%20ARCSEG."
-const LOGO = "https://www.arcsegma.com.br/assets/logo_arcseg-DsskF-p5.png"
 const nav = [
   ["Empresa", "empresa"],
   ["Autônomo", "autonomo"],
@@ -206,13 +205,9 @@ const nav = [
 ]
 function Brand({ footer = false }: { footer?: boolean }) {
   return (
-    <a
-      href="#inicio"
-      className={`logo ${footer ? "footerLogo" : ""}`}
-      aria-label="ARCSEG - Início"
-    >
-      <img src={LOGO} alt="ARCSEG" />
-    </a>
+    <div className={`logo ${footer ? "footerLogo" : ""}`}>
+      <img src="/logo_arcseg.png" alt="ARCSEG Distribuidora" />
+    </div>
   )
 }
 function Title({
@@ -286,9 +281,9 @@ export default function App() {
             className="navCta"
             href={WHATSAPP}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
           >
-            <Icon name="whatsapp" size={17} /> <span>Falar com consultor</span>
+            Falar com consultor
           </a>
           <button
             className="menu"
@@ -312,14 +307,9 @@ export default function App() {
                 Tecnologia e Segurança para <em>Impulsionar seu Negócio</em>
               </h1>
               <p>
-                Soluções completas em CFTV, alarmes, controle de acesso, redes
-                corporativas e detecção de incêndio com atendimento
-                especializado em todo o Maranhão.
-              </p>
-              <p className="authorityCopy">
-                Mais de uma década apoiando empresas, integradores e
-                profissionais de tecnologia com soluções completas de segurança
-                eletrônica e infraestrutura corporativa.
+                Há mais de uma década, oferecemos soluções em CFTV, alarmes,
+                controle de acesso, redes corporativas e detecção de incêndio,
+                com suporte especializado em todo o Maranhão.
               </p>
               <strong className="slogan">
                 Seu parceiro estratégico em tecnologia e segurança
@@ -331,15 +321,6 @@ export default function App() {
                 <button className="btn outline" onClick={() => go("autonomo")}>
                   Sou autônomo <Icon name="arrow" />
                 </button>
-                <a
-                  className="heroWhatsapp"
-                  href={WHATSAPP}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Falar com a ARCSEG no WhatsApp"
-                >
-                  <Icon name="whatsapp" />
-                </a>
               </div>
               <div className="trust">
                 {[
@@ -703,7 +684,7 @@ export default function App() {
               ))}
             </div>
             <div className="center">
-              <button className="btn navy" onClick={() => go("contato")}>
+              <button className="btn forest" onClick={() => go("contato")}>
                 Solicitar projeto personalizado <Icon name="arrow" />
               </button>
               <span>
@@ -811,7 +792,14 @@ export default function App() {
                   <Icon name="instagram" />
                   <span>
                     <small>INSTAGRAM</small>
-                    <b>@arcseg</b>
+                    <a
+                      className="contactInstagram"
+                      href="https://www.instagram.com/arcseg/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      @arcseg
+                    </a>
                   </span>
                 </p>
               </div>
@@ -894,8 +882,7 @@ export default function App() {
               <button className="btn green submit">
                 {sent
                   ? "Mensagem enviada com sucesso"
-                  : "Quero falar com a ARCSEG"}{" "}
-                <Icon name={sent ? "check" : "whatsapp"} />
+                  : "Quero falar com a ARCSEG"}
               </button>
             </form>
           </div>
@@ -948,19 +935,6 @@ export default function App() {
                   </a>
                 </article>
               ))}
-              <aside>
-                <div className="qr">
-                  {Array.from({ length: 81 }).map((_, i) => (
-                    <i
-                      key={i}
-                      className={i % 3 === 0 || i % 7 === 0 ? "on" : ""}
-                    />
-                  ))}
-                </div>
-                <small>APONTE A CÂMERA</small>
-                <b>Fale com um especialista</b>
-                <span>Resposta rápida pelo WhatsApp</span>
-              </aside>
             </div>
           </div>
         </section>
@@ -1040,7 +1014,13 @@ export default function App() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <Icon name="whatsapp" /> Falar no WhatsApp
+                <img
+                  className="finalWhatsappIcon"
+                  src="/logo_whatsapp_branco.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+                Falar no WhatsApp
               </a>
             </div>
           </div>
@@ -1110,7 +1090,7 @@ export default function App() {
         aria-label="Fale com um especialista da ARCSEG"
       >
         <span>Fale com um especialista da ARCSEG</span>
-        <Icon name="whatsapp" size={28} />
+        <img src="/logo_whatsapp.png" alt="" aria-hidden="true" />
       </a>
       {videoModal !== null && (
         <div
