@@ -1247,3 +1247,59 @@ main section:not(.hero) .btn {
     display: none;
   }
 }
+
+
+/* ============================================================
+   ARCSEG — CTA corporativo no lugar do antigo carrossel
+   Ajuste para desktop e mobile, sem alterar as demais seções.
+   ============================================================ */
+.campaign.campaignCta {
+  padding: 66px 0;
+  background: linear-gradient(110deg, #071D1A 0%, #0C2E27 72%, #0B3B2B 100%);
+}
+
+.campaignCtaInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.campaignCtaCopy {
+  width: 100%;
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.campaignCta h2 {
+  margin: 0;
+  color: #FFFFFF;
+  font: 600 clamp(28px, 3.2vw, 42px)/1.12 'Space Grotesk', sans-serif;
+  letter-spacing: -1.2px;
+}
+
+.campaignCta p {
+  margin-top: 14px;
+  color: #BEDDCD;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .campaign.campaignCta {
+    padding: 40px 0;
+  }
+
+  .campaignCta h2 {
+    font-size: clamp(25px, 7vw, 30px);
+    line-height: 1.15;
+    letter-spacing: -0.7px;
+  }
+
+  .campaignCta p {
+    margin-top: 11px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+}
