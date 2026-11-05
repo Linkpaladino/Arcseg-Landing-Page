@@ -1,4 +1,4 @@
-import { FormEvent, TouchEvent, useEffect, useRef, useState } from "react"
+import { FormEvent, useState } from "react"
 
 type IconName = "arrow" | "badge" | "bell" | "book" | "building" | "calendar" | "camera" | "check" | "chevron" | "clock" | "download" | "energy" | "fire" | "graduation" | "instagram" | "linkedin" | "lock" | "mail" | "map" | "menu" | "network" | "phone" | "quote" | "shield" | "spark" | "star" | "support" | "user" | "whatsapp" | "x"
 const iconPaths: Record<IconName, string> = {
@@ -95,36 +95,6 @@ const solutions: [IconName, string, string][] = [
     "Projetos completos, do cabeamento à operação.",
   ],
 ]
-const campaigns = [
-  [
-    "camera",
-    "MONITORAMENTO INTELIGENTE",
-    "Proteja seu patrimônio",
-    "Soluções inteligentes de monitoramento para empresas de todos os portes.",
-    "Solicitar diagnóstico",
-  ],
-  [
-    "lock",
-    "GESTÃO DE FLUXO",
-    "Controle total do acesso",
-    "Monitore entradas, saídas e visitantes em tempo real.",
-    "Agendar consultoria",
-  ],
-  [
-    "fire",
-    "PREVENÇÃO E CONTINUIDADE",
-    "Reduza riscos operacionais",
-    "Projetos completos de segurança eletrônica e prevenção contra incêndios.",
-    "Falar com especialista",
-  ],
-  [
-    "building",
-    "ECOSSISTEMA ARCSEG",
-    "Seja parceiro ARCSEG",
-    "Benefícios exclusivos para empresas, revendas e integradores.",
-    "Quero ser parceiro",
-  ],
-] as const
 const testimonials = [
   [
     "MC",
@@ -205,9 +175,13 @@ const nav = [
 ]
 function Brand({ footer = false }: { footer?: boolean }) {
   return (
-    <div className={`logo ${footer ? "footerLogo" : ""}`}>
+    <a
+      className={`logo ${footer ? "footerLogo" : ""}`}
+      href="#inicio"
+      aria-label="Voltar ao topo do site ARCSEG"
+    >
       <img src="/logo_arcseg.png" alt="ARCSEG Distribuidora" />
-    </div>
+    </a>
   )
 }
 function Title({
@@ -235,7 +209,6 @@ function Title({
 
 export default function App() {
   const [menu, setMenu] = useState(false),
-    [slide, setSlide] = useState(0),
     [faq, setFaq] = useState(0),
     [profile, setProfile] = useState("Empresa"),
     [sent, setSent] = useState(false),
@@ -243,39 +216,6 @@ export default function App() {
     [videoModal, setVideoModal] = useState<number | null>(null)
   // Controla a expansão dos depoimentos escritos somente no layout mobile.
   const [showAllReviews, setShowAllReviews] = useState(false)
-  useEffect(() => {
-    const t = setInterval(() => setSlide((s) => (s + 1) % 4), 5500)
-    return () => clearInterval(t)
-  }, [])
-  // Gestos de toque no carrossel corporativo (somente mobile).
-  // O movimento vertical continua livre para rolar a página normalmente.
-  const campaignTouchStart = useRef<{ x: number; y: number } | null>(null)
-
-  const handleCampaignTouchStart = (event: TouchEvent<HTMLDivElement>) => {
-    if (!window.matchMedia("(max-width: 640px)").matches) return
-    const touch = event.touches[0]
-    if (touch) {
-      campaignTouchStart.current = { x: touch.clientX, y: touch.clientY }
-    }
-  }
-
-  const handleCampaignTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
-    const start = campaignTouchStart.current
-    campaignTouchStart.current = null
-    if (!start || !window.matchMedia("(max-width: 640px)").matches) return
-
-    const touch = event.changedTouches[0]
-    if (!touch) return
-    const deltaX = touch.clientX - start.x
-    const deltaY = touch.clientY - start.y
-
-    // Só troca o slide quando o gesto é predominantemente horizontal.
-    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return
-    setSlide((current) =>
-      (current + (deltaX < 0 ? 1 : campaigns.length - 1)) % campaigns.length
-    )
-  }
-
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
     setMenu(false)
@@ -449,54 +389,15 @@ export default function App() {
           </div>
         </section>
 
-        <section className="campaign dark">
-          <div className="container">
-            <div className="heading">
-              <Title
-                light
-                eyebrow="SOLUÇÕES PARA EMPRESAS"
-                title="Tecnologia que protege. Estrutura que faz crescer."
-                text="Projetos personalizados para os desafios reais do seu negócio."
-              />
-              <div className="arrows">
-                <button onClick={() => setSlide((slide + 3) % 4)}>←</button>
-                <button onClick={() => setSlide((slide + 1) % 4)}>→</button>
-              </div>
-            </div>
-            <div
-              className="slider"
-              aria-label="Soluções corporativas: deslize para alternar os cards no celular"
-              onTouchStart={handleCampaignTouchStart}
-              onTouchEnd={handleCampaignTouchEnd}
-              onTouchCancel={() => { campaignTouchStart.current = null }}
-            >
-              {campaigns.map(([ic, e, t, p, c], n) => (
-                <article className={slide === n ? "active" : ""} key={t}>
-                  <div className="round">
-                    <Icon name={ic} />
-                  </div>
-                  <div>
-                    <small>{e}</small>
-                    <h3>{t}</h3>
-                    <p>{p}</p>
-                    <button onClick={() => go("contato")}>
-                      {c} <Icon name="arrow" size={17} />
-                    </button>
-                  </div>
-                  <b>0{n + 1}</b>
-                </article>
-              ))}
-            </div>
-            <div className="dots">
-              {campaigns.map((_, n) => (
-                <button
-                  key={n}
-                  className={slide === n ? "active" : ""}
-                  aria-label={`Mostrar solução ${n + 1}`}
-                  aria-current={slide === n ? "true" : undefined}
-                  onClick={() => setSlide(n)}
-                />
-              ))}
+        {/* Chamada direta ao cliente — substitui o antigo carrossel de campanhas. */}
+        <section className="campaign dark campaignCta" aria-labelledby="campaign-cta-title">
+          <div className="container campaignCtaInner">
+            <div className="campaignCtaCopy">
+              <h2 id="campaign-cta-title">Quer mais segurança para sua empresa?</h2>
+              <p>
+                Conte pra gente o que seu negócio precisa. A ARCSEG ajuda você
+                a encontrar a solução ideal.
+              </p>
             </div>
           </div>
         </section>
@@ -744,7 +645,7 @@ export default function App() {
             </div>
             <div className="center">
               <button className="btn forest" onClick={() => go("contato")}>
-                Solicitar projeto personalizado <Icon name="arrow" />
+                Solicitar orientação técnica <Icon name="arrow" />
               </button>
               <span>
                 <Icon name="clock" size={16} /> Retorno em até 1 dia útil
@@ -1012,8 +913,8 @@ export default function App() {
                   "Sim. Atendemos São Luís e todo o estado com suporte comercial e técnico.",
                 ],
                 [
-                  "Fazem projetos personalizados?",
-                  "Sim. Analisamos ambiente, riscos e objetivos para indicar uma solução sob medida.",
+                  "Vocês oferecem suporte para projetos complexos?",
+                  "Sim. Nossa equipe oferece suporte técnico e auxilia no dimensionamento de projetos complexos, orientando a escolha de equipamentos e soluções adequados.",
                 ],
                 [
                   "Atendem empresas de pequeno porte?",
