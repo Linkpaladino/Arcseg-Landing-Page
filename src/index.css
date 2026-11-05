@@ -666,7 +666,6 @@ main section:not(.hero) .btn {
 @media (max-width: 640px) {
   /* Parágrafos e descrições das seções claras */
   .benefits .title > p,
-  .campaign .title > p,
   .proof .title > p,
   .training .title > p,
   .solutions .title > p,
@@ -677,7 +676,6 @@ main section:not(.hero) .btn {
 
   /* Textos descritivos dentro dos cards das seções claras */
   .benefits .four p,
-  .campaign .slider p,
   .proof .reviews article > p,
   .proof .videoCard > small,
   .training .trainingGrid p,
@@ -748,5 +746,504 @@ main section:not(.hero) .btn {
     margin: 0;
     font-size: 14px;
     line-height: 1.55;
+  }
+}
+
+
+/* ============================================================
+   ARCSEG — MOBILE: legibilidade nas seções de fundo escuro
+   Preserva desktop, Hero e textos de formulários em fundo claro.
+   ============================================================ */
+@media (max-width: 640px) {
+  /* Textos logo abaixo dos títulos escuros */
+  .campaign .title.light > p,
+  .autonomo .title.light > p,
+  .lead .title.light > p {
+    color: #BEDDCD;
+  }
+
+  /* Descrições dos cards em áreas escuras */
+  .campaign .slider article p,
+  .autonomo .proCards article p {
+    color: #BEDDCD;
+  }
+
+  /* Indicadores e rótulos auxiliares das áreas escuras */
+  .stats .statGrid span,
+  .lead .contacts small {
+    color: #BEDDCD;
+  }
+
+  /* CTA de fundo verde vibrante precisa de texto ainda mais claro */
+  .final p,
+  .final p.finalContact {
+    color: #E7FFF3;
+  }
+
+  /* Rodapé com fundo verde-petróleo */
+  footer .footerGrid p,
+  footer .footerGrid button,
+  footer .bottom,
+  footer .bottom > span {
+    color: #BEDDCD;
+  }
+}
+
+/* ============================================================
+   ARCSEG — Mobile: carrossel de campanhas compacto e por toque
+   Afeta somente telas <= 640px. Desktop mantém botões e layout.
+   ============================================================ */
+@media (max-width: 640px) {
+  /* As setas somem no celular; gesto de deslizar + indicadores permanecem. */
+  .campaign .arrows {
+    display: none;
+  }
+
+  .campaign .heading {
+    margin-bottom: 25px;
+  }
+
+  .campaign .slider {
+    min-height: 270px;
+    touch-action: pan-y;
+  }
+
+  .campaign .slider article {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 8px;
+    padding: 16px 16px 12px;
+  }
+
+  .campaign .slider .round {
+    width: 46px;
+    height: 46px;
+  }
+
+  .campaign .slider h3 {
+    margin-top: 2px;
+    font-size: 21px;
+    line-height: 1.16;
+    letter-spacing: -0.5px;
+  }
+
+  .campaign .slider article small {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .campaign .slider article p {
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .campaign .slider article button {
+    min-height: 28px;
+    margin-top: 6px;
+    padding: 0;
+    font-size: 11px;
+  }
+
+  /* Indicadores com área de toque maior, sem aumentar sua aparência. */
+  .campaign .dots {
+    gap: 4px;
+    margin-top: 12px;
+  }
+
+  .campaign .dots button,
+  .campaign .dots button.active {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 28px;
+    background: transparent;
+  }
+
+  .campaign .dots button.active {
+    width: 45px;
+  }
+
+  .campaign .dots button::after {
+    content: "";
+    width: 24px;
+    height: 3px;
+    background: #2E5B49;
+  }
+
+  .campaign .dots button.active::after {
+    width: 40px;
+    background: var(--green);
+  }
+}
+
+/* Mais espaço para o texto dos cards em celulares bem estreitos. */
+@media (max-width: 360px) {
+  .campaign .slider {
+    min-height: 285px;
+  }
+  .campaign .slider article {
+    padding: 15px 15px 11px;
+  }
+  .campaign .slider h3 {
+    font-size: 20px;
+  }
+  .campaign .slider article p {
+    font-size: 12.5px;
+  }
+}
+
+/* ============================================================
+   Depoimentos escritos — mostrar 2 no celular, expandir ao toque
+   Desktop continua exibindo todos os depoimentos.
+   ============================================================ */
+.reviewsMore {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .testimonials .reviews:not(.reviewsExpanded) > article:nth-child(n + 3) {
+    display: none;
+  }
+
+  .testimonials .reviewsMore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    width: min(100%, 290px);
+    min-height: 44px;
+    margin: 18px auto 0;
+    padding: 9px 16px;
+    border: 1px solid #008A55;
+    border-radius: 5px;
+    background: #E9FFF4;
+    color: #007F50;
+    font: 700 12px/1.35 'Manrope', sans-serif;
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+  }
+
+  .testimonials .reviewsMore:hover {
+    background: #D7FAE9;
+  }
+
+  .testimonials .reviewsMore:focus-visible {
+    outline: 3px solid #00D67F;
+    outline-offset: 3px;
+  }
+
+  .testimonials .reviewsMore[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+  }
+}
+
+/* ARCSEG — centralização do CTA na seção Autônomo (somente mobile) */
+@media (max-width: 640px) {
+  .autonomo .split > div:first-child > .btn.green {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+}
+
+
+/* ============================================================
+   ARCSEG — Treinamentos: versão mobile compacta
+   As regras abaixo não modificam o layout desktop.
+   ============================================================ */
+.training .title > .trainingMobileText {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  /* Texto resumido em 2–3 linhas; conteúdo desktop preservado. */
+  .training .title > .trainingDesktopText {
+    display: none;
+  }
+
+  .training .title > .trainingMobileText {
+    display: block;
+    font-size: 15px;
+    line-height: 1.55;
+    margin-top: 15px;
+  }
+
+  /* Menos espaço entre a introdução e os cards. */
+  .training .trainingGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 25px;
+    margin-bottom: 24px;
+  }
+
+  /* O título vai ao lado do ícone; descrição logo abaixo. */
+  .training .trainingGrid > article {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 14px;
+    row-gap: 5px;
+    min-height: 0;
+    padding: 15px 17px;
+  }
+
+  .training .trainingGrid > article > .icon {
+    grid-column: 1;
+    grid-row: 1;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .training .trainingGrid > article > h3 {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .training .trainingGrid > article > p {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 2px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* ============================================================
+   ARCSEG — Soluções corporativas: cards compactos no mobile
+   Ícone e título lado a lado; descrição e CTA abaixo.
+   ============================================================ */
+@media (max-width: 640px) {
+  .solutions .solutionGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .solutions .solutionGrid > article {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "icon title number"
+      "description description description"
+      "cta cta cta";
+    align-items: center;
+    column-gap: 14px;
+    row-gap: 6px;
+    min-height: 0;
+    padding: 15px 17px;
+  }
+
+  .solutions .solutionGrid > article > .icon {
+    grid-area: icon;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .solutions .solutionGrid > article > h3 {
+    grid-area: title;
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  .solutions .solutionGrid > article > small {
+    grid-area: number;
+    position: static;
+    align-self: start;
+    justify-self: end;
+    margin: 0;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .solutions .solutionGrid > article > p {
+    grid-area: description;
+    margin: 2px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .solutions .solutionGrid > article > button {
+    grid-area: cta;
+    width: fit-content;
+    min-height: 28px;
+    margin-top: 4px;
+    padding: 0;
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   ARCSEG — Marcas e parceiros compactos (somente mobile)
+   Intelbras em destaque, outras marcas em duas colunas.
+   Desktop preservado.
+   ============================================================ */
+@media (max-width: 640px) {
+  .partners .partnerGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .partners .partnerGrid > article {
+    min-width: 0;
+    min-height: 104px;
+    padding: 16px 12px;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .partners .partnerGrid > article > b {
+    font-size: 16px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+  }
+
+  .partners .partnerGrid > article > span {
+    margin-top: 0;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .partners .partnerGrid > article > svg {
+    margin-bottom: 0;
+  }
+
+  /* Marca principal ganha largura total, mas sem excesso de altura */
+  .partners .partnerGrid > .intelbrasPartner {
+    grid-column: 1 / -1;
+    min-height: 98px;
+    padding: 16px;
+    gap: 7px;
+  }
+
+  .partners .partnerGrid > .intelbrasPartner > b {
+    font-size: 27px;
+    line-height: 1.1;
+  }
+
+  .partners .partnerGrid > .intelbrasPartner > span {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 350px) {
+  .partners .partnerGrid > article {
+    padding-inline: 9px;
+  }
+
+  .partners .partnerGrid > article > b {
+    font-size: 14px;
+  }
+}
+
+/* ============================================================
+   ARCSEG — Redes/Canais: cards compactos no mobile
+   ============================================================ */
+@media (max-width: 640px) {
+  .social .socialGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .social .socialGrid article {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "icon title"
+      "description description"
+      "cta cta";
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 8px;
+    padding: 16px 17px;
+  }
+
+  .social .socialGrid article > .icon {
+    grid-area: icon;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .social .socialGrid article > h3 {
+    grid-area: title;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .social .socialGrid article > p {
+    grid-area: description;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* O CTA é um link <a>, não um <button>: ocupa as duas colunas. */
+  .social .socialGrid article > .socialLink {
+    grid-area: cta;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: max-content;
+    max-width: 100%;
+    margin-top: 4px;
+    padding: 0;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: #008A55;
+    text-decoration: none;
+  }
+
+  .social .socialGrid article > .socialLink svg {
+    flex-shrink: 0;
+  }
+}
+
+/* ARCSEG — Chamada final: informações organizadas apenas no mobile. */
+@media (max-width: 640px) {
+  /* A ligação começa em uma linha própria, sem alterar o texto desktop. */
+  .final .finalDescription .finalPhoneContact {
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* Endereço, e-mail e Instagram em linhas próprias. */
+  .final .finalContact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    overflow-wrap: anywhere;
+  }
+
+  .final .finalContactSeparator {
+    display: none;
   }
 }

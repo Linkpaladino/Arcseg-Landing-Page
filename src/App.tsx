@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, TouchEvent, useEffect, useRef, useState } from "react"
 
 type IconName = "arrow" | "badge" | "bell" | "book" | "building" | "calendar" | "camera" | "check" | "chevron" | "clock" | "download" | "energy" | "fire" | "graduation" | "instagram" | "linkedin" | "lock" | "mail" | "map" | "menu" | "network" | "phone" | "quote" | "shield" | "spark" | "star" | "support" | "user" | "whatsapp" | "x"
 const iconPaths: Record<IconName, string> = {
@@ -214,18 +214,21 @@ function Title({
   eyebrow,
   title,
   text,
+  mobileText,
   light = false,
 }: {
   eyebrow: string
   title: string
   text?: string
+  mobileText?: string
   light?: boolean
 }) {
   return (
     <div className={`title ${light ? "light" : ""}`}>
       <span>{eyebrow}</span>
       <h2>{title}</h2>
-      {text && <p>{text}</p>}
+      {text && <p className={mobileText ? "trainingDesktopText" : undefined}>{text}</p>}
+      {mobileText && <p className="trainingMobileText">{mobileText}</p>}
     </div>
   )
 }
@@ -238,10 +241,41 @@ export default function App() {
     [sent, setSent] = useState(false),
     [proofTab, setProofTab] = useState<"text" | "video">("text"),
     [videoModal, setVideoModal] = useState<number | null>(null)
+  // Controla a expansão dos depoimentos escritos somente no layout mobile.
+  const [showAllReviews, setShowAllReviews] = useState(false)
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % 4), 5500)
     return () => clearInterval(t)
   }, [])
+  // Gestos de toque no carrossel corporativo (somente mobile).
+  // O movimento vertical continua livre para rolar a página normalmente.
+  const campaignTouchStart = useRef<{ x: number; y: number } | null>(null)
+
+  const handleCampaignTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (!window.matchMedia("(max-width: 640px)").matches) return
+    const touch = event.touches[0]
+    if (touch) {
+      campaignTouchStart.current = { x: touch.clientX, y: touch.clientY }
+    }
+  }
+
+  const handleCampaignTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const start = campaignTouchStart.current
+    campaignTouchStart.current = null
+    if (!start || !window.matchMedia("(max-width: 640px)").matches) return
+
+    const touch = event.changedTouches[0]
+    if (!touch) return
+    const deltaX = touch.clientX - start.x
+    const deltaY = touch.clientY - start.y
+
+    // Só troca o slide quando o gesto é predominantemente horizontal.
+    if (Math.abs(deltaX) < 45 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return
+    setSlide((current) =>
+      (current + (deltaX < 0 ? 1 : campaigns.length - 1)) % campaigns.length
+    )
+  }
+
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
     setMenu(false)
@@ -429,7 +463,13 @@ export default function App() {
                 <button onClick={() => setSlide((slide + 1) % 4)}>→</button>
               </div>
             </div>
-            <div className="slider">
+            <div
+              className="slider"
+              aria-label="Soluções corporativas: deslize para alternar os cards no celular"
+              onTouchStart={handleCampaignTouchStart}
+              onTouchEnd={handleCampaignTouchEnd}
+              onTouchCancel={() => { campaignTouchStart.current = null }}
+            >
               {campaigns.map(([ic, e, t, p, c], n) => (
                 <article className={slide === n ? "active" : ""} key={t}>
                   <div className="round">
@@ -452,6 +492,8 @@ export default function App() {
                 <button
                   key={n}
                   className={slide === n ? "active" : ""}
+                  aria-label={`Mostrar solução ${n + 1}`}
+                  aria-current={slide === n ? "true" : undefined}
                   onClick={() => setSlide(n)}
                 />
               ))}
@@ -497,7 +539,11 @@ export default function App() {
               </button>
             </div>
             {proofTab === "text" ? (
-              <div className="reviews">
+              <>
+              <div
+                className={`reviews${showAllReviews ? " reviewsExpanded" : ""}`}
+                id="reviews-list"
+              >
                 {testimonials.map(([av, n, r, p], index) => (
                   <article key={n}>
                     <Icon name="quote" />
@@ -524,6 +570,17 @@ export default function App() {
                   </article>
                 ))}
               </div>
+              <button
+                type="button"
+                className="reviewsMore"
+                aria-controls="reviews-list"
+                aria-expanded={showAllReviews}
+                onClick={() => setShowAllReviews((value) => !value)}
+              >
+                {showAllReviews ? "Mostrar menos depoimentos" : "Mostrar mais depoimentos"}
+                <Icon name="chevron" size={17} />
+              </button>
+              </>
             ) : (
               <div className="videoReviews">
                 {clientVideos.map((video, index) => (
@@ -622,6 +679,7 @@ export default function App() {
               eyebrow="CAPACITAÇÃO E TREINAMENTOS"
               title="Conhecimento que transforma profissionais em referência"
               text="A ARCSEG investe continuamente no crescimento dos profissionais do setor. Oferecemos treinamentos práticos para iniciantes e revendas experientes, ministrados por instrutores oficiais da fábrica da Intelbras, proporcionando atualização profissional, certificações e domínio das tecnologias mais utilizadas pelo mercado."
+              mobileText="Treinamentos práticos e certificações para sua evolução profissional."
             />
             <div className="trainingGrid">
               {([
@@ -996,13 +1054,23 @@ export default function App() {
                 Segurança, tecnologia e crescimento começam com a{" "}
                 <em>parceria certa.</em>
               </h2>
-              <p>
+              <p className="finalDescription">
                 Descubra como a ARCSEG pode transformar sua infraestrutura
-                tecnológica. Ligue para (98) 3089-0557 ou fale com nosso time.
+                tecnológica.{" "}
+                <span className="finalPhoneContact">
+                  Ligue para (98) 3089-0557 ou fale com nosso time.
+                </span>
               </p>
               <p className="finalContact">
-                Av. Jerônimo de Albuquerque, 90 — Angelim ·
-                gerencia.vendas@arcsegma.com.br · @arcseg
+                <span className="finalContactAddress">
+                  Av. Jerônimo de Albuquerque, 90 — Angelim
+                </span>
+                <span className="finalContactSeparator" aria-hidden="true">{" · "}</span>
+                <span className="finalContactEmail">
+                  gerencia.vendas@arcsegma.com.br
+                </span>
+                <span className="finalContactSeparator" aria-hidden="true">{" · "}</span>
+                <span className="finalContactSocial">@arcseg</span>
               </p>
             </div>
             <div>
