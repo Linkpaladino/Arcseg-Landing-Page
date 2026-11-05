@@ -283,7 +283,8 @@ export default function App() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Falar com consultor
+            <span className="navCtaFull">Falar com consultor</span>
+            <span className="navCtaCompact">Consultor</span>
           </a>
           <button
             className="menu"
